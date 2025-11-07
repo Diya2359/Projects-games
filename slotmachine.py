@@ -1,3 +1,6 @@
+# This is a Slot Machine , Where user can deposite money, place bets on 1 to 3
+# and "spin" a 3X3 grid to try win
+
 import random
 
 MAX_LINES = 3
@@ -107,9 +110,7 @@ def get_bet():
 
     return amount
 
-
-def main():
-    balance = deposite()
+def spin(balance):
     lines = get_number_of_lines()
     while True:
         bet = get_bet()
@@ -124,8 +125,20 @@ def main():
 
     slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
     print_slot_machine(slots)
-    winnings = check_winnings(slots, lines, bet, symbol_value)
+    winnings, winning_lines = check_winnings(slots, lines, bet, symbol_value)
     print(f"You won ${winnings}. ")
-   
+    print(f"You  won on lines:", *winning_lines)
+    return winnings - total_bet
 
+def main():
+    balance = deposite()
+    while True:
+        print(f"Current balance is ${balance}")
+        answer = input("Press enter to play (q to quit). ")
+        if answer == "q":
+            break
+        balance += spin(balance)
+
+    print(f"You left with ${balance}")
+    
 main()
